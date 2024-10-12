@@ -56,6 +56,11 @@ debug: {{ fg.value | json }}
         id="contactMobileNo"
         type="text"
       />
+      <div class="invalid-feedback">
+        @if(contactMobileNo.hasError('thMobile')) {
+          Mobile No should be Thailand Mobile.
+        }
+      </div>      
     </div>
 
     <div class="mt-3 d-flex justify-content-between">
