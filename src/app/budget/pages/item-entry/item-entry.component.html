@@ -45,10 +45,10 @@
     @for (item of filterItems; track item.id) {
       <tr>
         <td>{{ item.id }}</td>
-        <td>{{ item.title }}</td>
-        <td class="text-end pe-5">{{ item.price }}</td>
-        <td class="text-end pe-5">{{ item.amount }}</td>
-        <td class="text-center">{{ item.contactMobileNo }}</td>
+        <td>{{ item.title }}</td> 
+        <td class="text-end pe-5">{{ item.price | number:'1.2-2' }}</td>
+        <td class="text-end pe-5">{{ item.amount | number:'1.2-2' }}</td>
+        <td class="text-center">{{ item.contactMobileNo | mobileFormat }}</td>
         <td class="text-center">{{ item.status }}</td>
       </tr>
     }
