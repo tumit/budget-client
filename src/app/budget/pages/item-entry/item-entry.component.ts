@@ -4,6 +4,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { map } from 'rxjs';
 import { Item, ItemStatus } from '../../models/item';
 import { HttpClient } from '@angular/common/http';
+import { ItemService } from '../../item.service';
 
 @Component({
   selector: 'app-item-entry',
@@ -15,7 +16,7 @@ import { HttpClient } from '@angular/common/http';
 export class ItemEntryComponent {
 
 
-  httpClient = inject(HttpClient)
+  itemService = inject(ItemService)
 
   items: Item[] = [];
 
@@ -26,7 +27,7 @@ export class ItemEntryComponent {
 
   constructor() {
 
-    this.httpClient.get<Item[]>('http://localhost:3000/items').subscribe(vs => {
+    this.itemService.list().subscribe(vs => {
       this.items = vs;
       this.filterItems = vs;
     })
