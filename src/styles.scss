@@ -6,3 +6,8 @@ $primary: #630091;
 
 // bootstrap-icons
 @import "bootstrap-icons/font/bootstrap-icons";
+
+// angular + bootstrap
+.ng-invalid.ng-touched {
+  @extend .is-invalid;
+}
