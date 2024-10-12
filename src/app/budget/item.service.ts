@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Item } from './models/item';
+import { CreateItem, EditIem, Item } from './models/item';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -16,4 +16,13 @@ export class ItemService {
   list(): Observable<Item[]> {
     return this.httpClient.get<Item[]>(this.URL);
   }
+
+  add(item: CreateItem) {
+    return this.httpClient.post<Item>(this.URL, item);
+  }
+  
+  edit(id: number, item: EditIem) {
+    return this.httpClient.patch<Item>(`${this.URL}/${id}`, item);
+  }
+  
 }

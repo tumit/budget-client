@@ -7,11 +7,12 @@ import { HttpClient } from '@angular/common/http';
 import { ItemService } from '../../item.service';
 import { MobileFormatPipe } from '../../../shared/pipes/mobile-format.pipe';
 import { DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-item-entry',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe],
+  imports: [FormsModule, ReactiveFormsModule, MobileFormatPipe, DecimalPipe, RouterLink],
   templateUrl: './item-entry.component.html',
   styleUrl: './item-entry.component.scss'
 })
