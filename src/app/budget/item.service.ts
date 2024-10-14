@@ -16,6 +16,10 @@ export class ItemService {
   list(): Observable<Item[]> {
     return this.httpClient.get<Item[]>(this.URL);
   }
+  
+  get(id: number) {
+    return this.httpClient.get<Item>(`${this.URL}/${id}`)
+  }
 
   add(item: CreateItem) {
     return this.httpClient.post<Item>(this.URL, item);

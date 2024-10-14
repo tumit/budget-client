@@ -1,5 +1,5 @@
 // item-form.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe, Location } from '@angular/common';
 import { thMobile } from '../../../shared/validators/th-mobile.validator';
@@ -13,7 +13,11 @@ import { ItemStatus } from '../../models/item';
   templateUrl: './item-form.component.html',
   styleUrl: './item-form.component.scss'
 })
-export class ItemFormComponent {
+export class ItemFormComponent implements OnInit {
+
+  // add
+  @Input()
+  id: number | null = null;
 
   location = inject(Location);
 
@@ -35,12 +39,24 @@ export class ItemFormComponent {
     price: this.price
   })
 
+  ngOnInit() {
+    console.log('id', this.id) // ???
+    if (this.id) {
+      this.itemService.get(this.id).subscribe(v => this.fg.patchValue(v))
+    }
+  }
+
+  
   onBack(): void {
     this.location.back();
   }
 
   onSubmit(): void {
     const item = {...this.fg.getRawValue(), status: ItemStatus.PENDING };
-    this.itemService.add(item).subscribe(v => this.onBack())
+    if (this.id) {
+      this.itemService.edit(this.id, item).subscribe(() => this.onBack());
+    } else {
+      this.itemService.add(item).subscribe(() => this.onBack())
+    }
   }
 }
