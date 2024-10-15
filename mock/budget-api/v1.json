@@ -19,9 +19,9 @@
     {
       "title": "Mechanical Keyboard",
       "amount": 6,
-      "price": 750,
+      "price": 100,
       "contactMobileNo": "0834567890",
-      "status": "APPROVED",
+      "status": "PENDING",
       "id": 3
     },
     {
