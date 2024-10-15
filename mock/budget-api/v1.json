@@ -41,14 +41,6 @@
       "id": 5
     },
     {
-      "title": "Graphic Card",
-      "amount": 4,
-      "price": 4500,
-      "contactMobileNo": "0867890123",
-      "status": "REJECTED",
-      "id": 6
-    },
-    {
       "title": "Motherboard",
       "amount": 8,
       "price": 2300,
@@ -71,22 +63,6 @@
       "contactMobileNo": "0890123456",
       "status": "PENDING",
       "id": 9
-    },
-    {
-      "title": "Gaming Chair",
-      "amount": 9,
-      "price": 1400,
-      "contactMobileNo": "0891234567",
-      "status": "REJECTED",
-      "id": 10
-    },
-    {
-      "title": "My title 101.v2",
-      "contactMobileNo": "0891234568",
-      "amount": 20,
-      "price": 400,
-      "status": "PENDING",
-      "id": 11
     }
   ]
 }

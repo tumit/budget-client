@@ -28,5 +28,9 @@ export class ItemService {
   edit(id: number, item: EditIem) {
     return this.httpClient.patch<Item>(`${this.URL}/${id}`, item);
   }
-  
+
+  delete(id: number) {
+    return this.httpClient.delete<void>(`${this.URL}/${id}`);
+  }  
+
 }

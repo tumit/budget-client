@@ -51,7 +51,10 @@
   <tbody>
     @for (item of filterItems; track item.id) {
       <tr>
-        <td routerLink="/budget/item-edit/{{ item.id }}" ><i class="bi bi-pencil"></i></td>        
+        <td>
+          <i class="bi bi-pencil mx-2" routerLink="edit/{{ item.id }}" ></i>
+          <i class="bi bi-trash mx-2" (click)="onConfirm(item)" ></i>
+        </td>
         <td>{{ item.id }}</td>
         <td>{{ item.title }}</td> 
         <td class="text-end pe-5">{{ item.price | number:'1.2-2' }}</td>
