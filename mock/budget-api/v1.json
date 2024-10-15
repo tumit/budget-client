@@ -5,7 +5,7 @@
       "amount": 3,
       "price": 3200,
       "contactMobileNo": "0812345678",
-      "status": "APPROVED",
+      "status": "REJECTED",
       "id": 1
     },
     {
@@ -21,7 +21,7 @@
       "amount": 6,
       "price": 750,
       "contactMobileNo": "0834567890",
-      "status": "REJECTED",
+      "status": "APPROVED",
       "id": 3
     },
     {
