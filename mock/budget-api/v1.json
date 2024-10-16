@@ -21,7 +21,7 @@
       "amount": 6,
       "price": 100,
       "contactMobileNo": "0834567890",
-      "status": "PENDING",
+      "status": "REJECTED",
       "id": 3
     },
     {
@@ -61,7 +61,7 @@
       "amount": 10,
       "price": 500,
       "contactMobileNo": "0890123456",
-      "status": "PENDING",
+      "status": "APPROVED",
       "id": 9
     }
   ]

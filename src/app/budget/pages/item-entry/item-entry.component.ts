@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 import { BudgetPlanComponent } from "../../components/budget-plan/budget-plan.component";
+import { BudgetPlanService } from '../../budget-plan.service';
 
 @Component({
   selector: 'app-item-entry',
@@ -34,11 +35,14 @@ export class ItemEntryComponent {
   modalService = inject(BsModalService)
   bsModalRef?: BsModalRef;
 
+  budgetPlanService = inject(BudgetPlanService)
+
   constructor() {
 
     this.itemService.list().subscribe(vs => {
       this.items = vs;
       this.filterItems = vs;
+      this.updateUsed()
     })
 
     this.filterInput.valueChanges // ดักเหตุการณ์ที่ value เปลี่ยนได้
@@ -71,4 +75,22 @@ export class ItemEntryComponent {
       this.filterItems = this.items
     });
   }  
+
+  private updateUsed() {
+
+    const used = this.items
+      .filter((v) => v.status === ItemStatus.APPROVED) // [{ id: 5, price: 600, ... }, { id: 8, price: 1200, ... }]
+      .map((v) => v.price) // [600, 1200]
+      .reduce((previos, current) => (previos += current), 0);
+
+    this.budgetPlanService.updateUsed(used);
+
+    // reduce (sumFn, initValue)
+    // sumFn = (previos, current) => (previos += current)
+    // 1. (0, 600) => (0 += 600) then return to previos
+    // 2. (600, 1200) => (600 + 1200) return to previos
+    // 3. return 1800 as previos
+
+  }
+
 }
