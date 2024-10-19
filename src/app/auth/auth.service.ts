@@ -1,31 +1,30 @@
 // auth.service.ts
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
-import { LoggedInUser, Tokens, UserProfile } from './models/logged-in-user';
 import { ENV_CONFIG } from '../env.config';
-import { Router } from '@angular/router';
+import { LoggedInUser, Tokens, UserProfile } from './models/logged-in-user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  envConfig = inject(ENV_CONFIG)
+  envConfig = inject(ENV_CONFIG);
   readonly URL = `${this.envConfig.apiUrl}/auth/login`;
-  readonly TOKENS = 'TOKENS'
+  readonly TOKENS = 'TOKENS';
 
   httpClient = inject(HttpClient);
 
-  router = inject(Router)
+  router = inject(Router);
 
   loggedInUser: LoggedInUser | null = null;
 
   constructor() {
     const tokensInStorage = sessionStorage.getItem(this.TOKENS);
     if (tokensInStorage) {
-      this.setTokens(JSON.parse(tokensInStorage))
+      this.setTokens(JSON.parse(tokensInStorage));
     }
   }
 
@@ -38,12 +37,19 @@ export class AuthService {
   setTokens(newToken: Tokens) {
     const userProfile = jwtDecode<UserProfile>(newToken.access_token);
     this.loggedInUser = { tokens: newToken, userProfile };
-    sessionStorage.setItem(this.TOKENS, JSON.stringify(newToken))
+    sessionStorage.setItem(this.TOKENS, JSON.stringify(newToken));
   }
 
   logout(): void {
     this.loggedInUser = null;
     this.router.navigate(['/auth/login']);
-    sessionStorage.removeItem(this.TOKENS)
-  }  
+    sessionStorage.removeItem(this.TOKENS);
+  }
+
+  refreshToken(): Observable<{ access_token: string }> {
+    return this.httpClient.post<{ access_token: string }>(
+      `${this.envConfig.apiUrl}/auth/refresh`,
+      null
+    );
+  }
 }

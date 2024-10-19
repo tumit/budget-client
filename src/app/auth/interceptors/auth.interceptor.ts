@@ -1,6 +1,7 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
@@ -8,10 +9,55 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const loggedInUser = authService.loggedInUser;
 
   if (loggedInUser) {
+
+    const token = req.url.includes('auth/refresh')
+      ? loggedInUser.tokens.refresh_token
+      : loggedInUser.tokens.access_token;
+
     req = req.clone({
-      setHeaders: { Authorization: `Bearer ${loggedInUser.tokens.access_token}` }
+      setHeaders: { Authorization: `Bearer ${token}` }
     })
   }
 
-  return next(req);
+  return next(req).pipe(
+    catchError((error) => {
+
+      if (
+        !req.url.includes('auth/login') &&
+        !req.url.includes('auth/refresh') &&
+        error instanceof HttpErrorResponse &&
+        error.status === 401        
+      ) {
+
+        const refresh_token = loggedInUser?.tokens.refresh_token;
+
+        if (!refresh_token) {
+          authService.logout();
+          return throwError(() => error);
+        }
+
+        return authService.refreshToken().pipe(
+          switchMap((newTokens) => {
+            // got { access_token } then update access_token
+            authService.setTokens({ access_token: newTokens.access_token, refresh_token });            
+
+            // clone req with new access_token
+            req = req.clone({
+              setHeaders: { Authorization: `Bearer ${newTokens.access_token}` }
+            });
+
+            // call api with new req & new access_token
+            return next(req);
+
+          }),
+          catchError(error => {
+            authService.logout();
+            return throwError(() => error)
+          })
+        )
+      }
+
+      return throwError(() => error)
+    })
+  );
 };
