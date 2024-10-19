@@ -31,6 +31,19 @@ export class DemoComponent {
 
   post: any
 
+  myObj = {
+    name: 'A',
+    address: {
+      no: '123/456',
+      location: {
+        distict: 'Jatujak',
+        city: 'Bangkok'
+      }
+    }
+  }
+
+  myObj2 = {...this.myObj}
+
   constructor() {
     
     // # 1 

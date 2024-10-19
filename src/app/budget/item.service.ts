@@ -11,7 +11,7 @@ export class ItemService {
 
   envConfig = inject(ENV_CONFIG)
   readonly URL = `${this.envConfig.apiUrl}/items`;
-  
+
   private httpClient = inject(HttpClient)
 
   constructor() { }
