@@ -2,7 +2,7 @@
 import { JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AuthService } from '../../auth.service';
 
@@ -17,6 +17,7 @@ export class LoginComponent {
 
   // router
   router = inject(Router);
+  route = inject(ActivatedRoute)
 
   /// auth.service
   authService = inject(AuthService);
@@ -37,7 +38,8 @@ export class LoginComponent {
   onLogin() {
     this.authService.login(this.fg.getRawValue()).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/';
+        this.router.navigate([returnUrl]);
       },
       error: (error) => (this.error = error)
     });
