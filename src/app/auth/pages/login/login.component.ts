@@ -1,6 +1,6 @@
 // login.component.ts
 import { JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -13,7 +13,10 @@ import { AuthService } from '../../auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+
+  @Input()
+  code = '';
 
   // router
   router = inject(Router);
@@ -34,6 +37,15 @@ export class LoginComponent {
 
   // error
   error?: any;
+
+  ngOnInit() {
+    console.log('code',this.code)
+    if (this.code) {
+      this.authService
+        .loginOauth2(this.code)
+        .subscribe(() => this.router.navigate(['/']));
+    }
+  }
 
   onLogin() {
     this.authService.login(this.fg.getRawValue()).subscribe({
